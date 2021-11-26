@@ -7,6 +7,7 @@
   - [General assumptions](#general-assumptions)
     - [Process discovery](#process-discovery)
     - [Project structure and architecture](#project-structure-and-architecture)
+    - [NestJS](#nestjs)
   - [How to contribute](#how-to-contribute)
   - [References](#references)
 
@@ -88,6 +89,18 @@ In the case of a context, where we identified true business logic (**lending**) 
 that is a simplified (for the purpose of the project) abstraction of the reality and utilized
 hexagonal architecture. In the case of a context, that during Event Storming turned out to lack any complex
 domain logic, we applied CRUD-like local architecture.
+
+#### NestJS
+
+NestJS is taking a big part of the market. Currently, the most popular framework is still Express, but for complex business applications, NestJS will fit better, thanks to its advanced Dependency Injection system, TypeScript as the main language, and many out-of-the-box solutions that make the development more organized and standardized from the very begging.
+
+In oposite to the goal from the [ddd-by-examples/library#spring](https://github.com/ddd-by-examples/library#spring), we will not categorically avoid dependence on our framework. As Eric Evans said in his book
+
+> The best architectural frameworks solve complex technical
+> problems while allowing the domain developer to concentrate on expressing a model. But frameworks can easily get in the way, either by making too many assumptions that constrain domain
+> design choices or by making the implementation so heavyweight that development slows down.
+
+Following that sentence, we will try still using the framework in a few places to speed up the development without strongly affecting the structure of our model.
 
 ## How to contribute
 
