@@ -7,6 +7,7 @@
   - [General assumptions](#general-assumptions)
     - [Process discovery](#process-discovery)
     - [Project structure and architecture](#project-structure-and-architecture)
+    - [Architecture-code gap](#architecture-code-gap)
     - [NestJS](#nestjs)
   - [How to contribute](#how-to-contribute)
   - [References](#references)
@@ -89,6 +90,46 @@ In the case of a context, where we identified true business logic (**lending**) 
 that is a simplified (for the purpose of the project) abstraction of the reality and utilized
 hexagonal architecture. In the case of a context, that during Event Storming turned out to lack any complex
 domain logic, we applied CRUD-like local architecture.
+
+### Architecture-code gap
+
+We put a lot of attention to keep the consistency between the overall architecture (including diagrams)
+and the code structure. Having identified bounded contexts we could organize them as a set of libraries (one of the reasons why Nx is used). Thanks to this we gain the famous microservices' autonomy, while having a monolithic
+application (modular monolith). Each package has well defined public API, encapsulating all implementation details by using
+_nx-enforce-module-boundaries_.
+
+Just by looking at the package structure:
+
+```
+└── libs
+    ├── catalogue
+    └── lending
+        ├── application
+        ├── infrastructure
+        ├── ui-rest
+        └── domain/
+            ├── /book
+            ├── /dailysheet
+            ├── /librarybranch
+            ├── /patron
+            └── /patronprofile
+```
+
+you can see that the architecture is screaming that it has two bounded contexts: **catalogue**
+and **lending**. Moreover, the **lending context** is built around five business objects: **book**,
+**dailysheet**, **librarybranch**, **patron**, and **patronprofile**, while **catalogue** has no sublibraries,
+which suggests that it might be a CRUD with no complex logic inside. Please find the architecture diagram
+below.
+You may ask why, unlike a Java project, all business objects don't have their own hexagonal libraries. Indeed all business objects have now only their own catalog in each tier.
+We changed that here because in Java these libraries made extensive use of each other, while in Node.js it will produce a circular dependency. So, when two libraries strongly depend on each other, they have to be merged together.
+
+![Component diagram](docs/c4/component-diagram.png)
+
+Yet another advantage of this approach comparing to packaging by layer for example is that in order to
+deliver a functionality you would usually need to do it in one package only, which is the aforementioned
+autonomy. This autonomy, then, could be transferred to the level of application as soon as we split our
+_context-packages_ into separate microservices. Following this considerations, autonomy can be given away
+to a product team that can take care of the whole business area end-to-end.
 
 #### NestJS
 
