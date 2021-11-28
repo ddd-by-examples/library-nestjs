@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "nx": "nx",
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test"
@@ -17,6 +18,7 @@
     "tslib": "^2.0.0"
   },
   "devDependencies": {
+    "@nestjs-architects/nx-ddd-plugin": "^2.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
     "@nrwl/cli": "13.2.2",

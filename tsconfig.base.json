@@ -14,7 +14,13 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@library/lending/application": ["libs/lending/application/src/index.ts"],
+      "@library/lending/domain": ["libs/lending/domain/src/index.ts"],
+      "@library/lending/infrastructure": [
+        "libs/lending/infrastructure/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

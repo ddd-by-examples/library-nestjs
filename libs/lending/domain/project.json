@@ -1,0 +1,34 @@
+{
+  "root": "libs/lending/domain",
+  "sourceRoot": "libs/lending/domain/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/lending/domain",
+        "tsConfig": "libs/lending/domain/tsconfig.lib.json",
+        "packageJson": "libs/lending/domain/package.json",
+        "main": "libs/lending/domain/src/index.ts",
+        "assets": ["libs/lending/domain/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/lending/domain/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/lending/domain"],
+      "options": {
+        "jestConfig": "libs/lending/domain/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["domain:lending", "type:domain"]
+}

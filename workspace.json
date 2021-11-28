@@ -1,6 +1,9 @@
 {
   "version": 2,
   "projects": {
+    "lending-application": "libs/lending/application",
+    "lending-domain": "libs/lending/domain",
+    "lending-infrastructure": "libs/lending/infrastructure",
     "library": "apps/library"
   }
 }
