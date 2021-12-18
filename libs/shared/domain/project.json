@@ -1,0 +1,34 @@
+{
+  "root": "libs/shared/domain",
+  "sourceRoot": "libs/shared/domain/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/domain",
+        "tsConfig": "libs/shared/domain/tsconfig.lib.json",
+        "packageJson": "libs/shared/domain/package.json",
+        "main": "libs/shared/domain/src/index.ts",
+        "assets": ["libs/shared/domain/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/shared/domain/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/shared/domain"],
+      "options": {
+        "jestConfig": "libs/shared/domain/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["scope:shared", "type:domain"]
+}
