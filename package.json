@@ -10,8 +10,10 @@
   },
   "private": true,
   "dependencies": {
+    "@nestjs-architects/typed-cqrs": "^0.1.1",
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
+    "@nestjs/cqrs": "^8.0.1",
     "@nestjs/platform-express": "^8.0.0",
     "fp-ts": "^2.11.5",
     "reflect-metadata": "^0.1.13",
@@ -31,6 +33,7 @@
     "@nrwl/node": "13.2.2",
     "@nrwl/tao": "13.2.2",
     "@nrwl/workspace": "13.2.2",
+    "@sikora00/nestjs": "^0.3.1",
     "@types/jest": "27.0.2",
     "@types/node": "16.11.14",
     "@typescript-eslint/eslint-plugin": "~4.33.0",
@@ -38,6 +41,7 @@
     "eslint": "7.32.0",
     "eslint-config-prettier": "8.1.0",
     "jest": "27.2.3",
+    "jest-createspyobj": "^2.0.0",
     "prettier": "^2.3.1",
     "ts-jest": "27.0.5",
     "typescript": "~4.4.3"

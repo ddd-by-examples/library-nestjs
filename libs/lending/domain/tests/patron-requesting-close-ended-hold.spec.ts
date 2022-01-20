@@ -1,4 +1,4 @@
-import { right } from 'fp-ts/Either';
+import { left, right } from 'fp-ts/Either';
 import { Either } from 'fp-ts/lib/Either';
 import { AvailableBook } from '../src/lib/available-book';
 import { BookHoldFailed } from '../src/lib/events/book-hold-failed';
@@ -16,14 +16,20 @@ class Fixtures {
     jest.useFakeTimers().setSystemTime(new Date('2021-01-01').getTime());
     return new Fixtures();
   }
+  GivenPatronWithManyHolds(): Patron {
+    return PatronFixtures.regularPatronWithHolds(5);
+  }
+
   GivenAnyPatron(): Patron[] {
     return [
       PatronFixtures.GivenRegularPatron(),
       PatronFixtures.GivenResearcherPatron(),
     ];
   }
+
   GivenCirculatingAvailableBook =
     PatronFixtures.GivenCirculatingAvailableBook.bind(this);
+
   ThenBookShouldBePlacedOnHoldTillDate(
     result: Either<BookHoldFailed, BookPlacedOnHoldEvents>
   ): void {
@@ -35,6 +41,11 @@ class Fixtures {
       )
     );
   }
+
+  ThenItFailed(result: Either<BookHoldFailed, BookPlacedOnHoldEvents>): void {
+    expect(result).toMatchObject(left(new BookHoldFailed()));
+  }
+
   WhenRequestingCloseEndedHold(
     patron: Patron,
     book: AvailableBook,
@@ -71,5 +82,16 @@ describe('PatronRequestingCloseEndedHold', () => {
       };
       expect(test).toThrow();
     }
+  });
+
+  test('patron cannot hold more books than it is allowed', () => {
+    const patron = fixtures.GivenPatronWithManyHolds();
+    const book = fixtures.GivenCirculatingAvailableBook();
+    const result = fixtures.WhenRequestingCloseEndedHold(
+      patron,
+      book,
+      HoldDuration.closeEnded(NumberOfDays.of(1))
+    );
+    fixtures.ThenItFailed(result);
   });
 });
