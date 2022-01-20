@@ -4,30 +4,13 @@ import { BookHoldFailed } from '../src/lib/events/book-hold-failed';
 import { BookPlacedOnHoldEvents } from '../src/lib/events/book-placed-on-hold-events';
 import { MaximumNumberOhHoldsReached } from '../src/lib/events/maximum-number-on-holds-reached';
 import { Patron } from '../src/lib/patron';
-import { onlyResearcherPatronsCanPlaceOpenEndedHolds } from '../src/lib/policies/placing-on-hold-policy';
-import { BookId } from '../src/lib/value-objects/book-id';
-import { Hold } from '../src/lib/value-objects/hold';
 import { HoldDuration } from '../src/lib/value-objects/hold-duration';
-import { LibraryBranchId } from '../src/lib/value-objects/library-branch-id';
 import { NumberOfDays } from '../src/lib/value-objects/number-of-days';
-import { PatronHolds } from '../src/lib/value-objects/patron-holds';
-import { PatronInformation } from '../src/lib/value-objects/patron-information';
-import { PatronType } from '../src/lib/value-objects/patron-type';
 import { PatronFixtures } from './patron.fixtures';
 
 class Fixtures {
   static GivenRegularPatronWithLastPossibleHold(): Patron {
-    return new Patron(
-      new PatronHolds(
-        new Set(
-          Array(4)
-            .fill(null)
-            .map(() => new Hold(BookId.generate(), LibraryBranchId.generate()))
-        )
-      ),
-      [onlyResearcherPatronsCanPlaceOpenEndedHolds],
-      new PatronInformation(PatronType.Regular)
-    );
+    return PatronFixtures.regularPatronWithHolds(4);
   }
   static GivenCirculatingAvailableBook =
     PatronFixtures.GivenCirculatingAvailableBook;
