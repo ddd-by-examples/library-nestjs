@@ -4,6 +4,7 @@
     "lending-application": "libs/lending/application",
     "lending-domain": "libs/lending/domain",
     "lending-infrastructure": "libs/lending/infrastructure",
+    "lending-ui-rest": "libs/lending/ui-rest",
     "library": "apps/library",
     "shared-domain": "libs/shared/domain"
   }

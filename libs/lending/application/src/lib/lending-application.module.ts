@@ -1,10 +1,12 @@
 import { DynamicModule, Module, ModuleMetadata } from '@nestjs/common';
-
-import { LendingApplicationService } from './lending-application.service';
+import { CqrsModule } from '@nestjs/cqrs';
+import { LendingFacade } from './lending.facade';
+import { PlaceOnHoldHandler } from './place-on-hold/place-on-hold.handler';
 
 @Module({
-  providers: [LendingApplicationService],
-  exports: [LendingApplicationService],
+  imports: [CqrsModule],
+  providers: [LendingFacade, PlaceOnHoldHandler],
+  exports: [LendingFacade],
 })
 export class LendingApplicationModule {
   static withInfrastructure(

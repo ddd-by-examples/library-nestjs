@@ -17,7 +17,7 @@ export class PlaceOnHoldCommand extends Command<void> {
     return new PlaceOnHoldCommand(patron, bookId, some(forDays));
   }
 
-  private constructor(
+  constructor(
     public readonly patron: PatronId,
     public readonly bookId: BookId,
     public readonly noOfDays: Option<number>

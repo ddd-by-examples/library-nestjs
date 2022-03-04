@@ -20,6 +20,7 @@
       "@library/lending/infrastructure": [
         "libs/lending/infrastructure/src/index.ts"
       ],
+      "@library/lending/ui-rest": ["libs/lending/ui-rest/src/index.ts"],
       "@library/shared/domain": ["libs/shared/domain/src/index.ts"]
     }
   },
