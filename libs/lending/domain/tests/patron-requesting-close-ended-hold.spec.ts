@@ -2,12 +2,12 @@ import { left, right } from 'fp-ts/Either';
 import { Either } from 'fp-ts/lib/Either';
 import { AvailableBook } from '../src/lib/available-book';
 import { BookHoldFailed } from '../src/lib/events/book-hold-failed';
-import { BookPlacedOnHold } from '../src/lib/events/book-placed-on-hold';
 import { BookPlacedOnHoldEvents } from '../src/lib/events/book-placed-on-hold-events';
 import { Patron } from '../src/lib/patron';
 import { DateVO } from '../src/lib/value-objects/date.vo';
 import { HoldDuration } from '../src/lib/value-objects/hold-duration';
 import { NumberOfDays } from '../src/lib/value-objects/number-of-days';
+import { PatronId } from '../src/lib/value-objects/patron-id';
 import { PatronFixtures } from './patron.fixtures';
 
 class Fixtures {
@@ -38,14 +38,16 @@ class Fixtures {
     expect(result).toMatchObject(
       right(
         expect.objectContaining({
-          bookPlacedOnHold: new BookPlacedOnHold(DateVO.now().addDays(3)),
+          bookPlacedOnHold: expect.objectContaining({
+            till: DateVO.now().addDays(3),
+          }),
         })
       )
     );
   }
 
   ThenItFailed(result: Either<BookHoldFailed, BookPlacedOnHoldEvents>): void {
-    expect(result).toMatchObject(left(new BookHoldFailed()));
+    expect(result).toMatchObject({_tag: 'Left'}); // @ToDo
   }
 
   WhenRequestingCloseEndedHold(

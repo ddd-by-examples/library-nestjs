@@ -12,15 +12,19 @@
   "dependencies": {
     "@nestjs-architects/typed-cqrs": "^0.1.1",
     "@nestjs/common": "^8.0.0",
+    "@nestjs/config": "^1.2.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/cqrs": "^8.0.1",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/typeorm": "^8.0.3",
     "class-validator": "^0.13.2",
     "fp-ts": "^2.11.5",
+    "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
     "tiny-types": "^1.16.1",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "typeorm": "^0.2.45"
   },
   "devDependencies": {
     "@nestjs-architects/nx-ddd-plugin": "^2.0.0",

@@ -1,11 +1,8 @@
+import { LendingUiRestModule } from '@library/lending/ui-rest';
 import { Module } from '@nestjs/common';
-
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppCoreModule } from './app-core.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [AppCoreModule, LendingUiRestModule],
 })
 export class AppModule {}

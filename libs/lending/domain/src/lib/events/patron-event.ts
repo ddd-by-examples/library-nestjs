@@ -1,2 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface PatronEvent {}
+import { PatronId } from '../value-objects/patron-id';
+
+export interface PatronEvent {
+  patronId: PatronId;
+}

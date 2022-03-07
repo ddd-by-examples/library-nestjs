@@ -1,6 +1,10 @@
 import {
-        AvailableBook, BookHoldFailed, BookId, BookPlacedOnHoldEvents, Patron,
-        PatronId
+  AvailableBook,
+  BookHoldFailed,
+  BookId,
+  BookPlacedOnHoldEvents,
+  Patron,
+  PatronId,
 } from '@library/lending/domain';
 import { InvalidArgumentException, Result } from '@library/shared/domain';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
@@ -24,7 +28,10 @@ export class PlaceOnHoldHandler implements ICommandHandler<PlaceOnHoldCommand> {
     const result = patron.placeOnHold(availableBook, command.holdDuration);
     return pipe(
       result,
-      match(this.publishOnFail.bind(this), this.publishOnSuccess.bind(this))
+      match<BookHoldFailed, BookPlacedOnHoldEvents, Promise<Result>>(
+        this.publishOnFail.bind(this),
+        this.publishOnSuccess.bind(this)
+      )
     );
   }
 
@@ -54,16 +61,18 @@ export class PlaceOnHoldHandler implements ICommandHandler<PlaceOnHoldCommand> {
     );
   }
 
-  private publishOnFail(bookHoldFailed: BookHoldFailed): Result.Rejection {
+  private async publishOnFail(
+    bookHoldFailed: BookHoldFailed
+  ): Promise<Result.Rejection> {
     this.repository.publish(bookHoldFailed);
 
     return Result.Rejection;
   }
 
-  private publishOnSuccess(
+  private async publishOnSuccess(
     placedOnHold: BookPlacedOnHoldEvents
-  ): Result.Success {
-    this.repository.publish(placedOnHold);
+  ): Promise<Result.Success> {
+    await this.repository.publish(placedOnHold);
 
     return Result.Success;
   }

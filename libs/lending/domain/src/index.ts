@@ -7,3 +7,4 @@ export * from './lib/value-objects/book-id';
 export * from './lib/value-objects/hold-duration';
 export * from './lib/value-objects/number-of-days';
 export * from './lib/value-objects/patron-id';
+export * from './lib/factories/patron.factory';

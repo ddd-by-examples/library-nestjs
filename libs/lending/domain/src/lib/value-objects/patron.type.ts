@@ -1,0 +1,4 @@
+enum PatronType {
+  Researcher,
+  Regular,
+}

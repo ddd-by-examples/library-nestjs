@@ -8,7 +8,7 @@ import { PatronFixtures } from './patron.fixtures';
 
 class Fixtures {
   ThenCantDoThis(result: Either<BookHoldFailed, BookPlacedOnHoldEvents>) {
-    expect(result).toMatchObject(left(new BookHoldFailed()));
+    expect(result).toMatchObject({_tag: 'Left'}); // @ToDo
   }
   ThenTheBookIsOnHold(
     result: Either<BookHoldFailed, BookPlacedOnHoldEvents>

@@ -7,7 +7,7 @@ import { BookPlacedOnHoldEvents } from './events/book-placed-on-hold-events';
 import { MaximumNumberOhHoldsReached } from './events/maximum-number-on-holds-reached';
 import {
   PlacingOnHoldPolicy,
-  Rejection
+  Rejection,
 } from './policies/placing-on-hold-policy';
 import { HoldDuration } from './value-objects/hold-duration';
 import { PatronHolds } from './value-objects/patron-holds';
@@ -58,15 +58,29 @@ export class Patron {
       if (this.patronHolds.maximumHoldsAfterHoldingNextBook()) {
         return right(
           BookPlacedOnHoldEvents.events(
-            new BookPlacedOnHold(duration.to),
+            this.patronInformation.patronId,
+            new BookPlacedOnHold(
+              this.patronInformation.patronId,
+              book.bookId,
+              book.libraryBranchId,
+              duration.to
+            ),
             new MaximumNumberOhHoldsReached()
           )
         );
       }
       return right(
-        BookPlacedOnHoldEvents.event(new BookPlacedOnHold(duration.to))
+        BookPlacedOnHoldEvents.event(
+          this.patronInformation.patronId,
+          new BookPlacedOnHold(
+            this.patronInformation.patronId,
+            book.bookId,
+            book.libraryBranchId,
+            duration.to
+          )
+        )
       );
     }
-    return left(new BookHoldFailed());
+    return left(new BookHoldFailed(this.patronInformation.patronId));
   }
 }

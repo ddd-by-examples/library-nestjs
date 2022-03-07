@@ -20,17 +20,17 @@ export class PatronFixtures {
     return new Patron(
       new PatronHolds(new Set()),
       new Set([onlyResearcherPatronsCanPlaceOpenEndedHolds]),
-      new PatronInformation(PatronType.Regular)
+      new PatronInformation(patronId, PatronType.Regular)
     );
   }
   static GivenCirculatingAvailableBook(): AvailableBook {
-    return new AvailableBook();
+    return new AvailableBook(BookId.generate(), LibraryBranchId.generate());
   }
   static GivenResearcherPatron(): Patron {
     return new Patron(
       new PatronHolds(new Set()),
       new Set([onlyResearcherPatronsCanPlaceOpenEndedHolds]),
-      new PatronInformation(PatronType.Researcher)
+      new PatronInformation(PatronId.generate(), PatronType.Researcher)
     );
   }
 
@@ -44,7 +44,7 @@ export class PatronFixtures {
         )
       ),
       allCurrentPolicies,
-      new PatronInformation(PatronType.Regular)
+      new PatronInformation(PatronId.generate(), PatronType.Regular)
     );
   }
 }
