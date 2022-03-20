@@ -1,4 +1,4 @@
-import { Either, left, right } from 'fp-ts/lib/Either';
+import { Either, right } from 'fp-ts/lib/Either';
 import { AvailableBook } from '../src/lib/available-book';
 import { BookHoldFailed } from '../src/lib/events/book-hold-failed';
 import { BookPlacedOnHold } from '../src/lib/events/book-placed-on-hold';
@@ -8,7 +8,7 @@ import { PatronFixtures } from './patron.fixtures';
 
 class Fixtures {
   ThenCantDoThis(result: Either<BookHoldFailed, BookPlacedOnHoldEvents>) {
-    expect(result).toMatchObject({_tag: 'Left'}); // @ToDo
+    expect(result).toMatchObject({ _tag: 'Left' }); // @ToDo
   }
   ThenTheBookIsOnHold(
     result: Either<BookHoldFailed, BookPlacedOnHoldEvents>

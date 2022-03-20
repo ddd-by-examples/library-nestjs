@@ -1,5 +1,8 @@
-import { AvailableBook, BookId } from '@library/lending/domain';
-import { LibraryBranchId } from 'libs/lending/domain/src/lib/value-objects/library-branch-id';
+import {
+  AvailableBook,
+  BookId,
+  LibraryBranchId,
+} from '@library/lending/domain';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()

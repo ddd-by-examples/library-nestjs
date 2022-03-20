@@ -1,4 +1,4 @@
-import { IsUUID, IsNumber, Min, IsOptional } from 'class-validator';
+import { IsNumber, IsUUID, Min } from 'class-validator';
 
 export class PlaceOnHoldDto {
   @IsUUID()

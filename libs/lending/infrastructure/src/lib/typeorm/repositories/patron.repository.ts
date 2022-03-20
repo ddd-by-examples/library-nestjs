@@ -1,17 +1,17 @@
+import { PatronRepository } from '@library/lending/application';
 import {
-  PatronEvent,
-  Patron,
-  PatronId,
-  PatronFactory,
   BookId,
+  LibraryBranchId,
+  Patron,
+  PatronEvent,
+  PatronFactory,
+  PatronId,
 } from '@library/lending/domain';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { option } from 'fp-ts';
 import { pipe } from 'fp-ts/lib/function';
-import { isNone, Option } from 'fp-ts/lib/Option';
-import { PatronRepository } from 'libs/lending/application/src/lib/ports/patron.repository';
-import { LibraryBranchId } from 'libs/lending/domain/src/lib/value-objects/library-branch-id';
+import { Option } from 'fp-ts/lib/Option';
 import { Repository } from 'typeorm';
 import { PatronEntity } from '../entities/patron.entity';
 

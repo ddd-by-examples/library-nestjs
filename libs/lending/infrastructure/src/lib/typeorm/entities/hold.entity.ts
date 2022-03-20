@@ -1,6 +1,4 @@
-import { BookId } from '@library/lending/domain';
-import { Hold } from 'libs/lending/domain/src/lib/value-objects/hold';
-import { LibraryBranchId } from 'libs/lending/domain/src/lib/value-objects/library-branch-id';
+import { BookId, Hold, LibraryBranchId } from '@library/lending/domain';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { PatronEntity } from './patron.entity';
 

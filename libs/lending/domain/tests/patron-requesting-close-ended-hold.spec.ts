@@ -1,4 +1,4 @@
-import { left, right } from 'fp-ts/Either';
+import { right } from 'fp-ts/Either';
 import { Either } from 'fp-ts/lib/Either';
 import { AvailableBook } from '../src/lib/available-book';
 import { BookHoldFailed } from '../src/lib/events/book-hold-failed';
@@ -7,7 +7,6 @@ import { Patron } from '../src/lib/patron';
 import { DateVO } from '../src/lib/value-objects/date.vo';
 import { HoldDuration } from '../src/lib/value-objects/hold-duration';
 import { NumberOfDays } from '../src/lib/value-objects/number-of-days';
-import { PatronId } from '../src/lib/value-objects/patron-id';
 import { PatronFixtures } from './patron.fixtures';
 
 class Fixtures {
@@ -47,7 +46,7 @@ class Fixtures {
   }
 
   ThenItFailed(result: Either<BookHoldFailed, BookPlacedOnHoldEvents>): void {
-    expect(result).toMatchObject({_tag: 'Left'}); // @ToDo
+    expect(result).toMatchObject({ _tag: 'Left' }); // @ToDo
   }
 
   WhenRequestingCloseEndedHold(

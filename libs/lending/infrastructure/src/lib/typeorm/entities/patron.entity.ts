@@ -1,10 +1,10 @@
 import {
+  BookPlacedOnHold,
   BookPlacedOnHoldEvents,
   PatronEvent,
   PatronId,
+  PatronType,
 } from '@library/lending/domain';
-import { BookPlacedOnHold } from 'libs/lending/domain/src/lib/events/book-placed-on-hold';
-import { PatronType } from 'libs/lending/domain/src/lib/value-objects/patron-type';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { HoldEntity } from './hold.entity';
 

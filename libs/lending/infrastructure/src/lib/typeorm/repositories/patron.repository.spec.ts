@@ -1,12 +1,15 @@
 import { PatronRepository } from '@library/lending/application';
-import { BookId, PatronId } from '@library/lending/domain';
+import {
+  BookId,
+  BookPlacedOnHold,
+  DateVO,
+  LibraryBranchId,
+  PatronId,
+  PatronType,
+} from '@library/lending/domain';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
-import { BookPlacedOnHold } from 'libs/lending/domain/src/lib/events/book-placed-on-hold';
-import { DateVO } from 'libs/lending/domain/src/lib/value-objects/date.vo';
-import { LibraryBranchId } from 'libs/lending/domain/src/lib/value-objects/library-branch-id';
-import { PatronType } from 'libs/lending/domain/src/lib/value-objects/patron-type';
 import { Repository } from 'typeorm';
 import { Book } from '../entities/book.entity';
 import { HoldEntity } from '../entities/hold.entity';
