@@ -64,7 +64,7 @@ export class PlaceOnHoldHandler implements ICommandHandler<PlaceOnHoldCommand> {
   private async publishOnFail(
     bookHoldFailed: BookHoldFailed
   ): Promise<Result.Rejection> {
-    this.repository.publish(bookHoldFailed);
+    await this.repository.publish(bookHoldFailed);
 
     return Result.Rejection;
   }

@@ -1,6 +1,9 @@
 import { Either, isLeft, left, right } from 'fp-ts/lib/Either';
 import { getLeft, isNone, none, Option } from 'fp-ts/lib/Option';
 import { AvailableBook } from './available-book';
+import { BookOnHold } from './book-on-hold';
+import { BookHoldCancelingFailed } from './events/book-hold-canceled';
+import { BookHoldCanceled } from './events/book-hold-canceling-failed';
 import { BookHoldFailed } from './events/book-hold-failed';
 import { BookPlacedOnHold } from './events/book-placed-on-hold';
 import { BookPlacedOnHoldEvents } from './events/book-placed-on-hold-events';
@@ -19,6 +22,16 @@ export class Patron {
     private readonly placingOnHoldPolicies: Set<PlacingOnHoldPolicy>,
     private readonly patronInformation: PatronInformation
   ) {}
+
+  cancelHold(
+    book: BookOnHold
+  ): Either<BookHoldCancelingFailed, BookHoldCanceled> {
+    if (this.patronHolds.includes(book)) {
+      return right(new BookHoldCanceled());
+    }
+    return left(new BookHoldCancelingFailed());
+  }
+
   isRegular(): boolean {
     return this.patronInformation.isRegular();
   }

@@ -1,4 +1,5 @@
 export * from './lib/available-book';
+export * from './lib/book-on-hold';
 export * from './lib/events/book-hold-failed';
 export * from './lib/events/book-placed-on-hold';
 export * from './lib/events/book-placed-on-hold-events';
