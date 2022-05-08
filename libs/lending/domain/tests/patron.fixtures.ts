@@ -16,7 +16,9 @@ import { PatronType } from '../src/lib/value-objects/patron-type';
 export class PatronFixtures {
   static regularPatronWithHold(bookOnHold: BookOnHold): Patron {
     return new Patron(
-      new PatronHolds(new Set([new Hold(bookOnHold.bookId)])),
+      new PatronHolds(
+        new Set([new Hold(bookOnHold.bookId, bookOnHold.libraryBranchId)])
+      ),
       new Set([onlyResearcherPatronsCanPlaceOpenEndedHolds]),
       new PatronInformation(PatronId.generate(), PatronType.Researcher)
     );
@@ -48,7 +50,7 @@ export class PatronFixtures {
         new Set(
           Array(numberOfHold)
             .fill(null)
-            .map(() => new Hold(BookId.generate()))
+            .map(() => new Hold(BookId.generate(), LibraryBranchId.generate()))
         )
       ),
       allCurrentPolicies,

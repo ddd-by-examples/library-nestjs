@@ -27,9 +27,9 @@ export class Patron {
     book: BookOnHold
   ): Either<BookHoldCancelingFailed, BookHoldCanceled> {
     if (this.patronHolds.includes(book)) {
-      return right(new BookHoldCanceled());
+      return right(new BookHoldCanceled(this.patronInformation.patronId));
     }
-    return left(new BookHoldCancelingFailed());
+    return left(new BookHoldCancelingFailed(this.patronInformation.patronId));
   }
 
   isRegular(): boolean {
