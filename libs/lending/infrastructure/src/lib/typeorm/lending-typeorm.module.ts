@@ -1,11 +1,12 @@
 import {
   FindAvailableBook,
+  FindBookOnHold,
   PatronRepository,
 } from '@library/lending/application';
 import { PatronFactory } from '@library/lending/domain';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Book } from './entities/book.entity';
+import { BookEntity } from './entities/book.entity';
 import { HoldEntity } from './entities/hold.entity';
 import { PatronEntity } from './entities/patron.entity';
 import { BookRepo } from './repositories/book.repository';
@@ -15,15 +16,16 @@ import {
 } from './repositories/patron.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Book, PatronEntity, HoldEntity])],
+  imports: [TypeOrmModule.forFeature([BookEntity, PatronEntity, HoldEntity])],
   providers: [
     BookRepo,
     PatronRepo,
     DomainModelMapper,
     PatronFactory, // @ToDo
     { provide: FindAvailableBook, useExisting: BookRepo },
+    { provide: FindBookOnHold, useExisting: BookRepo },
     { provide: PatronRepository, useExisting: PatronRepo },
   ],
-  exports: [FindAvailableBook, PatronRepository],
+  exports: [FindAvailableBook, FindBookOnHold, PatronRepository],
 })
 export class LendingTypeOrmModule {}

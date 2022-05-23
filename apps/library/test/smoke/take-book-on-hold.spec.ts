@@ -2,14 +2,17 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { PatronType } from 'libs/lending/domain/src/lib/value-objects/patron-type';
-import { Book } from 'libs/lending/infrastructure/src/lib/typeorm/entities/book.entity';
+import {
+  BookEntity,
+  BookState,
+} from 'libs/lending/infrastructure/src/lib/typeorm/entities/book.entity';
 import { HoldEntity } from 'libs/lending/infrastructure/src/lib/typeorm/entities/hold.entity';
 import { PatronEntity } from 'libs/lending/infrastructure/src/lib/typeorm/entities/patron.entity';
 import * as request from 'supertest';
 import { Repository } from 'typeorm';
 import { AppModule } from '../../src/app/app.module';
 
-describe('PatronProfileController', () => {
+describe('Take book on hold', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -29,7 +32,7 @@ describe('PatronProfileController', () => {
       await patronRepo.insert(
         PatronEntity.restore({
           id: patronId,
-          resourcesOnHold: [],
+          booksOnHold: [],
           patronType: PatronType.Regular,
         })
       );
@@ -39,15 +42,20 @@ describe('PatronProfileController', () => {
       await patronRepo.delete(patronId);
     });
 
-    describe('And book', () => {
-      let bookRepo: Repository<Book>;
+    describe('And available book', () => {
+      let bookRepo: Repository<BookEntity>;
       const bookId = '55760e4e-9aa9-4754-ae26-159df2fd03dd';
       const libraryBranchId = '55760e4e-9aa9-4754-ae26-159df2fd03dd';
 
       beforeAll(async () => {
-        bookRepo = app.get(getRepositoryToken(Book));
+        bookRepo = app.get(getRepositoryToken(BookEntity));
         await bookRepo.insert(
-          Book.restore({ bookId, availableAtBranch: libraryBranchId })
+          BookEntity.restore({
+            bookId,
+            availableAtBranch: libraryBranchId,
+            onHoldAtBranch: null,
+            state: BookState.Available,
+          })
         );
       });
 

@@ -1,5 +1,6 @@
 import { PatronRepository } from '@library/lending/application';
 import {
+  BookHoldCanceled,
   BookId,
   BookPlacedOnHold,
   DateVO,
@@ -11,7 +12,7 @@ import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Book } from '../entities/book.entity';
+import { BookEntity, BookState } from '../entities/book.entity';
 import { HoldEntity } from '../entities/hold.entity';
 import { PatronEntity } from '../entities/patron.entity';
 import { LendingTypeOrmModule } from '../lending-typeorm.module';
@@ -50,7 +51,7 @@ describe('PatronRepository', () => {
       await patronTypeOrmRepo.insert(
         PatronEntity.restore({
           id: patronId,
-          resourcesOnHold: [],
+          booksOnHold: [],
           patronType: PatronType.Regular,
         })
       );
@@ -60,15 +61,20 @@ describe('PatronRepository', () => {
       await patronTypeOrmRepo.delete(patronId);
     });
 
-    describe('And book', () => {
-      let bookRepo: Repository<Book>;
+    describe('And available book', () => {
+      let bookRepo: Repository<BookEntity>;
       const bookId = '55760e4e-9aa9-4754-ae26-159df2fd03dd';
       const libraryBranchId = '55760e4e-9aa9-4754-ae26-159df2fd03dd';
 
       beforeAll(async () => {
-        bookRepo = moduleRef.get(getRepositoryToken(Book));
+        bookRepo = moduleRef.get(getRepositoryToken(BookEntity));
         await bookRepo.insert(
-          Book.restore({ bookId, availableAtBranch: libraryBranchId })
+          BookEntity.restore({
+            bookId,
+            availableAtBranch: libraryBranchId,
+            state: BookState.Available,
+            onHoldAtBranch: null,
+          })
         );
       });
 
@@ -98,6 +104,68 @@ describe('PatronRepository', () => {
 
           it('should add record to holds table', async () => {
             expect(await holdsRepo.count()).toBe(1);
+          });
+        });
+      });
+    });
+  });
+
+  describe('Given patron', () => {
+    describe('And book on hold', () => {
+      let patronTypeOrmRepo: Repository<PatronEntity>;
+      const patronId = '55760e4e-9aa9-4754-ae26-159df2fd03dd';
+      beforeAll(async () => {
+        bookRepo = moduleRef.get(getRepositoryToken(BookEntity));
+        await bookRepo.insert(
+          BookEntity.restore({
+            bookId,
+            availableAtBranch: null,
+            onHoldAtBranch: libraryBranchId,
+            state: BookState.OnHold,
+          })
+        );
+        patronTypeOrmRepo = moduleRef.get(getRepositoryToken(PatronEntity));
+        await patronTypeOrmRepo.save(
+          patronTypeOrmRepo.create(
+            PatronEntity.restore({
+              id: patronId,
+              booksOnHold: [
+                HoldEntity.create({ bookId, libraryBranchId, patronId }),
+              ],
+              patronType: PatronType.Regular,
+            })
+          )
+        );
+      });
+
+      afterAll(async () => {
+        await patronTypeOrmRepo.delete(patronId);
+        await bookRepo.delete(bookId);
+      });
+
+      let bookRepo: Repository<BookEntity>;
+      const bookId = '55760e4e-9aa9-4754-ae26-159df2fd03dd';
+      const libraryBranchId = '55760e4e-9aa9-4754-ae26-159df2fd03dd';
+
+      describe('publish', () => {
+        describe('BookHoldCanceled', () => {
+          let holdsRepo: Repository<HoldEntity>;
+
+          beforeAll(async () => {
+            holdsRepo = moduleRef.get(getRepositoryToken(HoldEntity));
+            await patronRepo.publish(
+              new BookHoldCanceled(
+                new PatronId(patronId),
+                new BookId(bookId),
+                new LibraryBranchId(libraryBranchId)
+              )
+            );
+          });
+
+          it('should remove record from holds table', async () => {
+            expect(await holdsRepo.count({ where: { patronId } })).toBe(
+              0
+            );
           });
         });
       });

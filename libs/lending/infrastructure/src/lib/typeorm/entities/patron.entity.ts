@@ -1,6 +1,9 @@
 import {
+  BookHoldCanceled,
+  BookId,
   BookPlacedOnHold,
   BookPlacedOnHoldEvents,
+  LibraryBranchId,
   PatronEvent,
   PatronId,
   PatronType,
@@ -12,12 +15,15 @@ import { HoldEntity } from './hold.entity';
 export class PatronEntity {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
-  @OneToMany(() => HoldEntity, (hold) => hold.patronId, {
+
+  @OneToMany(() => HoldEntity, (hold) => hold.patron, {
     eager: true,
     cascade: true,
+    onDelete: 'CASCADE',
   })
-  resourcesOnHold!: HoldEntity[];
-  @Column()
+  booksOnHold!: HoldEntity[];
+
+  @Column({ type: 'enum', enum: PatronType })
   patronType!: PatronType;
 
   get patronId(): PatronId {
@@ -25,7 +31,13 @@ export class PatronEntity {
   }
 
   static restore(
-    data: Omit<PatronEntity, 'patronId' | 'handle' | 'handleBookPlacedOnHold'>
+    data: Omit<
+      PatronEntity,
+      | 'patronId'
+      | 'handle'
+      | 'handleBookPlacedOnHold'
+      | 'handleBookHoldCanceled'
+    >
   ): PatronEntity {
     return Object.assign(new PatronEntity(), data);
   }
@@ -39,16 +51,38 @@ export class PatronEntity {
       return this.handleBookPlacedOnHold(event.bookPlacedOnHold);
     }
 
+    if (event instanceof BookHoldCanceled) {
+      return this.handleBookHoldCanceled(event);
+    }
+
     throw new Error(`No handler for event ${event.constructor.name}`);
+  }
+  handleBookHoldCanceled(event: BookHoldCanceled): PatronEntity {
+    return this.removeHoldIfPresent(
+      event.patronId,
+      event.bookId,
+      event.libraryBranchId
+    );
   }
 
   handleBookPlacedOnHold(event: BookPlacedOnHold): PatronEntity {
-    this.resourcesOnHold.push(
+    this.booksOnHold.push(
       HoldEntity.create({
         patronId: event.patronId.value,
         bookId: event.bookId.value,
         libraryBranchId: event.libraryBranchId.value,
       })
+    );
+    return this;
+  }
+
+  private removeHoldIfPresent(
+    patronId: PatronId,
+    bookId: BookId,
+    libraryBranchId: LibraryBranchId
+  ): PatronEntity {
+    this.booksOnHold = this.booksOnHold.filter(
+      (entity) => !entity.is(patronId, bookId, libraryBranchId)
     );
     return this;
   }

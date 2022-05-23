@@ -29,7 +29,7 @@ export class DomainModelMapper {
 
   mapPatronHolds(patronEntity: PatronEntity): Set<[BookId, LibraryBranchId]> {
     return new Set(
-      patronEntity.resourcesOnHold.map((entity) => [
+      patronEntity.booksOnHold.map((entity) => [
         entity.getBookId(),
         entity.getLibraryBranchId(),
       ])
