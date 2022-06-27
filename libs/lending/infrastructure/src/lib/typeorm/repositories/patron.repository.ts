@@ -7,6 +7,7 @@ import {
   PatronFactory,
   PatronId,
 } from '@library/lending/domain';
+import { DomainEvents } from '@library/shared/domain';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { option } from 'fp-ts';
@@ -42,11 +43,14 @@ export class PatronRepo implements PatronRepository {
   constructor(
     @InjectRepository(PatronEntity)
     private readonly typeormRepo: Repository<PatronEntity>,
+    private readonly domainEvents: DomainEvents,
     private readonly domainModelMapper: DomainModelMapper
   ) {}
 
   publish(event: PatronEvent): Promise<Patron> {
-    return this.handleNextEvent(event);
+    const result = this.handleNextEvent(event);
+    this.domainEvents.publish(event);
+    return result;
   }
 
   async findById(id: PatronId): Promise<Option<Patron>> {

@@ -1,0 +1,36 @@
+{
+  "root": "libs/shared/infrastructure-nestjs-cqrs-events",
+  "sourceRoot": "libs/shared/infrastructure-nestjs-cqrs-events/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/infrastructure-nestjs-cqrs-events",
+        "tsConfig": "libs/shared/infrastructure-nestjs-cqrs-events/tsconfig.lib.json",
+        "packageJson": "libs/shared/infrastructure-nestjs-cqrs-events/package.json",
+        "main": "libs/shared/infrastructure-nestjs-cqrs-events/src/index.ts",
+        "assets": ["libs/shared/infrastructure-nestjs-cqrs-events/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/shared/infrastructure-nestjs-cqrs-events/**/*.ts"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/shared/infrastructure-nestjs-cqrs-events"],
+      "options": {
+        "jestConfig": "libs/shared/infrastructure-nestjs-cqrs-events/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["type:infrastructure"]
+}

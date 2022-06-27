@@ -12,7 +12,7 @@ import {
   ParseUUIDPipe,
   Post,
 } from '@nestjs/common';
-import { of } from 'fp-ts/Option';
+import { fromNullable, of } from 'fp-ts/Option';
 import { CancelHoldCommand } from '@library/lending/application';
 import { PlaceOnHoldDto } from './dtos/place-on-hold.dto';
 
@@ -29,7 +29,7 @@ export class PatronProfileController {
       new PlaceOnHoldCommand(
         new PatronId(patronId),
         new BookId(body.bookId),
-        of(body.numberOfDays)
+        fromNullable(body.numberOfDays)
       )
     );
   }

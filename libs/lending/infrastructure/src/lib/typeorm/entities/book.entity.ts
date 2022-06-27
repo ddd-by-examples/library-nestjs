@@ -4,7 +4,9 @@ import {
   BookId,
   BookOnHold,
   LibraryBranchId,
+  PatronId,
 } from '@library/lending/domain';
+import { Version } from '@library/shared/domain';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum BookState {
@@ -22,8 +24,14 @@ export class BookEntity {
   @Column('uuid', { nullable: true })
   onHoldAtBranch!: string | null;
 
+  @Column('uuid', { nullable: true })
+  onHoldByPatron!: string | null;
+
   @Column({ type: 'enum', enum: BookState })
   state!: BookState;
+
+  @Column({ type: 'smallint' })
+  version!: number;
 
   getBookId(): BookId {
     return new BookId(this.bookId);
@@ -50,7 +58,8 @@ export class BookEntity {
     }
     return new AvailableBook(
       this.getBookId(),
-      new LibraryBranchId(this.availableAtBranch)
+      new LibraryBranchId(this.availableAtBranch),
+      new Version(this.version)
     );
   }
 
@@ -58,9 +67,14 @@ export class BookEntity {
     if (!this.onHoldAtBranch) {
       throw new Error('onHoldAtBranch is empty');
     }
+    if (!this.onHoldByPatron) {
+      throw new Error('onHoldByPatron is empty');
+    }
     return new BookOnHold(
       this.getBookId(),
-      new LibraryBranchId(this.onHoldAtBranch)
+      new LibraryBranchId(this.onHoldAtBranch),
+      new PatronId(this.onHoldByPatron),
+      new Version(this.version)
     );
   }
 

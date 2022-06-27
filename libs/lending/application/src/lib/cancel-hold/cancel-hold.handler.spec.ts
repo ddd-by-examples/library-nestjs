@@ -27,7 +27,7 @@ describe('CancelHoldHandler', () => {
     repository.publish.mockReset();
   });
 
-  it('should successfully cancel hold if book was placed on hold by patron and patron and book exist', async () => {
+  it('should successfully cancel hold if book was placed on hold by patron, and patron and book exist', async () => {
     // given
     const canceling = new CancelHoldHandler(willFindBook, repository);
     // and

@@ -1,5 +1,5 @@
 import { Either, left, right } from 'fp-ts/lib/Either';
-import { AvailableBook } from '../available-book';
+import { AvailableBook } from '../book/available-book';
 import { Patron } from '../patron';
 import { HoldDuration } from '../value-objects/hold-duration';
 import { PatronHolds } from '../value-objects/patron-holds';
@@ -13,7 +13,7 @@ export interface PlacingOnHoldPolicy {
 
 export const regularPatronMaximumNumberOfHoldsPolicy: PlacingOnHoldPolicy = (
   _toHold,
-  patron,
+  patron
 ) => {
   if (
     patron.isRegular() &&

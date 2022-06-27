@@ -74,6 +74,8 @@ describe('PatronRepository', () => {
             availableAtBranch: libraryBranchId,
             state: BookState.Available,
             onHoldAtBranch: null,
+            onHoldByPatron: null,
+            version: 0,
           })
         );
       });
@@ -103,7 +105,7 @@ describe('PatronRepository', () => {
           });
 
           it('should add record to holds table', async () => {
-            expect(await holdsRepo.count()).toBe(1);
+            expect(await holdsRepo.count({ patronId })).toBe(1);
           });
         });
       });
@@ -111,9 +113,10 @@ describe('PatronRepository', () => {
   });
 
   describe('Given patron', () => {
-    describe('And book on hold', () => {
+    describe('And his book on hold', () => {
       let patronTypeOrmRepo: Repository<PatronEntity>;
       const patronId = '55760e4e-9aa9-4754-ae26-159df2fd03dd';
+
       beforeAll(async () => {
         bookRepo = moduleRef.get(getRepositoryToken(BookEntity));
         await bookRepo.insert(
@@ -122,6 +125,8 @@ describe('PatronRepository', () => {
             availableAtBranch: null,
             onHoldAtBranch: libraryBranchId,
             state: BookState.OnHold,
+            onHoldByPatron: patronId,
+            version: 1,
           })
         );
         patronTypeOrmRepo = moduleRef.get(getRepositoryToken(PatronEntity));
@@ -163,9 +168,7 @@ describe('PatronRepository', () => {
           });
 
           it('should remove record from holds table', async () => {
-            expect(await holdsRepo.count({ where: { patronId } })).toBe(
-              0
-            );
+            expect(await holdsRepo.count({ where: { patronId } })).toBe(0);
           });
         });
       });

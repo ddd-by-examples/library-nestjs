@@ -1,7 +1,7 @@
 import { Either, isLeft, left, right } from 'fp-ts/lib/Either';
 import { getLeft, isNone, none, Option } from 'fp-ts/lib/Option';
-import { AvailableBook } from './available-book';
-import { BookOnHold } from './book-on-hold';
+import { AvailableBook } from './book/available-book';
+import { BookOnHold } from './book/book-on-hold';
 import { BookHoldCancelingFailed } from './events/book-hold-canceled';
 import { BookHoldCanceled } from './events/book-hold-canceling-failed';
 import { BookHoldFailed } from './events/book-hold-failed';
@@ -100,6 +100,11 @@ export class Patron {
         )
       );
     }
-    return left(new BookHoldFailed(this.patronInformation.patronId));
+    return left(
+      BookHoldFailed.bookHoldFailedNow(
+        rejection.value,
+        this.patronInformation.patronId
+      )
+    );
   }
 }

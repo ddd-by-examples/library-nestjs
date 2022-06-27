@@ -1,5 +1,5 @@
 import { Either, right } from 'fp-ts/lib/Either';
-import { AvailableBook } from '../src/lib/available-book';
+import { AvailableBook } from '../src/lib/book/available-book';
 import { BookHoldFailed } from '../src/lib/events/book-hold-failed';
 import { BookPlacedOnHold } from '../src/lib/events/book-placed-on-hold';
 import { BookPlacedOnHoldEvents } from '../src/lib/events/book-placed-on-hold-events';

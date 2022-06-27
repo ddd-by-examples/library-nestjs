@@ -1,5 +1,6 @@
-import { BookOnHold } from '../src';
-import { AvailableBook } from '../src/lib/available-book';
+import { Version } from '@library/shared/domain';
+import { AvailableBook } from '../src/lib/book/available-book';
+import { BookOnHold } from '../src/lib/book/book-on-hold';
 import { Patron } from '../src/lib/patron';
 import {
   allCurrentPolicies,
@@ -34,7 +35,11 @@ export class PatronFixtures {
     );
   }
   static GivenCirculatingAvailableBook(): AvailableBook {
-    return new AvailableBook(BookId.generate(), LibraryBranchId.generate());
+    return new AvailableBook(
+      BookId.generate(),
+      LibraryBranchId.generate(),
+      Version.zero()
+    );
   }
   static GivenResearcherPatron(): Patron {
     return new Patron(

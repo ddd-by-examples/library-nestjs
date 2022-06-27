@@ -1,4 +1,4 @@
-import { BookOnHold } from '../book-on-hold';
+import { BookOnHold } from '../book/book-on-hold';
 import { Hold } from './hold';
 
 export class PatronHolds {

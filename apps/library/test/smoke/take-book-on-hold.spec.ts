@@ -24,6 +24,10 @@ describe('Take book on hold', () => {
     await app.init();
   });
 
+  afterAll(async () => {
+    await app.close();
+  });
+
   describe('Given patron', () => {
     let patronRepo: Repository<PatronEntity>;
     const patronId = '55760e4e-9aa9-4754-ae26-159df2fd03dd';
@@ -55,6 +59,8 @@ describe('Take book on hold', () => {
             availableAtBranch: libraryBranchId,
             onHoldAtBranch: null,
             state: BookState.Available,
+            onHoldByPatron: null,
+            version: 0,
           })
         );
       });
@@ -74,9 +80,5 @@ describe('Take book on hold', () => {
           .expect(201);
       });
     });
-  });
-
-  afterAll(async () => {
-    await app.close();
   });
 });
