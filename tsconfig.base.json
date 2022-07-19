@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@library/catalogue": ["libs/catalogue/src/index.ts"],
       "@library/lending/application": ["libs/lending/application/src/index.ts"],
       "@library/lending/domain": ["libs/lending/domain/src/index.ts"],
       "@library/lending/infrastructure": [
