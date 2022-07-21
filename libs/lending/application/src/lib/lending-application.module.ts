@@ -6,6 +6,7 @@ import { LendingFacade } from './lending.facade';
 import { PlaceOnHoldHandler } from './place-on-hold/place-on-hold.handler';
 import { DuplicateHoldEventHandler } from './duplicate-hold.event.handler';
 import { BookHoldCanceledEventHandler } from './book-hold-canceled.event-handler';
+import { CreateAvailableBookOnInstanceAddedEventHandler } from './create-available-book-on-instance-added.event-handler';
 
 @Module({
   imports: [CqrsModule],
@@ -13,6 +14,7 @@ import { BookHoldCanceledEventHandler } from './book-hold-canceled.event-handler
     BookHoldCanceledEventHandler,
     BookPlacedOnHoldEventHandler,
     CancelHoldHandler,
+    CreateAvailableBookOnInstanceAddedEventHandler,
     DuplicateHoldEventHandler,
     LendingFacade,
     PlaceOnHoldHandler,
