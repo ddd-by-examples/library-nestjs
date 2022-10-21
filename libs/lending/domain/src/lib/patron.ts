@@ -62,7 +62,7 @@ export class Patron {
 
   private patronCanCheckout(book: Book): Option<Rejection> {
     const rejection = [...this.checkingOutPolicies]
-      .map((policy) => policy(book, this.patronInformation.patronId))
+      .map((policy) => policy(book, this))
       .find(isLeft);
     return rejection ? getLeft(rejection) : none;
   }
@@ -87,6 +87,11 @@ export class Patron {
   numberOfHolds(): number {
     return this.patronHolds.numberOfHolds;
   }
+
+  hasOnHold(book: BookOnHold): boolean {
+    return this.patronHolds.includes(book);
+  }
+
   private patronCanHold(
     book: AvailableBook,
     duration: HoldDuration
