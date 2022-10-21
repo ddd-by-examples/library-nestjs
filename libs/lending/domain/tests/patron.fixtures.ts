@@ -2,6 +2,7 @@ import { Version } from '@library/shared/domain';
 import { AvailableBook } from '../src/lib/book/available-book';
 import { BookOnHold } from '../src/lib/book/book-on-hold';
 import { Patron } from '../src/lib/patron';
+import { allCheckingOutPolicies } from '../src/lib/policies/checking-out.policy';
 import {
   allCurrentPolicies,
   onlyResearcherPatronsCanPlaceOpenEndedHolds,
@@ -15,20 +16,29 @@ import { PatronInformation } from '../src/lib/value-objects/patron-information';
 import { PatronType } from '../src/lib/value-objects/patron-type';
 
 export class PatronFixtures {
-  static regularPatronWithHold(bookOnHold: BookOnHold): Patron {
+  static regularPatronWithHold(
+    bookOnHold: BookOnHold,
+    patronId?: PatronId
+  ): Patron {
     return new Patron(
+      allCheckingOutPolicies,
       new PatronHolds(
         new Set([new Hold(bookOnHold.bookId, bookOnHold.libraryBranchId)])
       ),
       new Set([onlyResearcherPatronsCanPlaceOpenEndedHolds]),
-      new PatronInformation(PatronId.generate(), PatronType.Researcher)
+      new PatronInformation(
+        patronId ?? PatronId.generate(),
+        PatronType.Researcher
+      )
     );
   }
+
   static GivenRegularPatron(patronId?: PatronId): Patron {
     if (!patronId) {
       patronId = PatronId.generate();
     }
     return new Patron(
+      allCheckingOutPolicies,
       new PatronHolds(new Set()),
       new Set([onlyResearcherPatronsCanPlaceOpenEndedHolds]),
       new PatronInformation(patronId, PatronType.Regular)
@@ -43,6 +53,7 @@ export class PatronFixtures {
   }
   static GivenResearcherPatron(): Patron {
     return new Patron(
+      allCheckingOutPolicies,
       new PatronHolds(new Set()),
       new Set([onlyResearcherPatronsCanPlaceOpenEndedHolds]),
       new PatronInformation(PatronId.generate(), PatronType.Researcher)
@@ -51,6 +62,7 @@ export class PatronFixtures {
 
   static regularPatronWithHolds(numberOfHold: number): Patron {
     return new Patron(
+      allCheckingOutPolicies,
       new PatronHolds(
         new Set(
           Array(numberOfHold)

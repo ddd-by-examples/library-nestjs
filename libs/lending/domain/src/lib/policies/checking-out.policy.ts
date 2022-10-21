@@ -1,15 +1,15 @@
 import { Either, left, right } from 'fp-ts/Either';
 import { Book } from '../book/book';
 import { BookOnHold } from '../book/book-on-hold';
-import { PatronId } from '../value-objects/patron-id';
+import { Patron } from '../patron';
 
 export interface CheckingOutPolicy {
-  (book: Book, patronId: PatronId): Either<Rejection, Allowance>;
+  (book: Book, patron: Patron): Either<Rejection, Allowance>;
 }
 
 export const bookIsOnHold: CheckingOutPolicy = (
   toCheckout: Book,
-  _: PatronId
+  _: Patron
 ) => {
   if (!(toCheckout instanceof BookOnHold)) {
     return left(
@@ -23,9 +23,9 @@ export const bookIsOnHold: CheckingOutPolicy = (
 
 export const bookIsOnHoldByThePatron: CheckingOutPolicy = (
   toCheckout: Book,
-  patronId: PatronId
+  patron: Patron
 ) => {
-  if (toCheckout instanceof BookOnHold && !toCheckout.by(patronId)) {
+  if (toCheckout instanceof BookOnHold && !patron.hasOnHold(toCheckout)) {
     return left(
       Rejection.withReason(
         'Cannot checkout book which is on hold by different patron'

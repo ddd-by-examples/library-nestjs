@@ -6,7 +6,7 @@ import { BookId } from '../src/lib/value-objects/book-id';
 import { LibraryBranchId } from '../src/lib/value-objects/library-branch-id';
 
 export class BookFixtures {
-  static bookOnHold() {
+  static bookOnHold(): BookOnHold {
     return new BookOnHold(
       BookId.generate(),
       LibraryBranchId.generate(),
