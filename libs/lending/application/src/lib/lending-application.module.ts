@@ -3,7 +3,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { BookPlacedOnHoldEventHandler } from './book-placed-on-hold.event-handler';
 import { CancelHoldHandler } from './cancel-hold/cancel-hold.handler';
 import { LendingFacade } from './lending.facade';
-import { PlaceOnHoldHandler } from './place-on-hold/place-on-hold.handler';
+import { PlaceOnHoldHandler } from './place-on-hold/placing-on-hold';
 import { DuplicateHoldEventHandler } from './duplicate-hold.event.handler';
 import { BookHoldCanceledEventHandler } from './book-hold-canceled.event-handler';
 import { CreateAvailableBookOnInstanceAddedEventHandler } from './create-available-book-on-instance-added.event-handler';

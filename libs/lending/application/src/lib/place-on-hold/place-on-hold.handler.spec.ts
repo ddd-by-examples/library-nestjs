@@ -7,7 +7,7 @@ import { PatronFixtures } from '../../../../domain/tests/patron.fixtures';
 import { PatronRepository } from '../ports/patron.repository';
 import { FindAvailableBook } from './find-available-book';
 import { PlaceOnHoldCommand } from './place-on-hold.command';
-import { PlaceOnHoldHandler } from './place-on-hold.handler';
+import { PlaceOnHoldHandler } from './placing-on-hold';
 import { createSpyObj } from 'jest-createspyobj';
 import { Result } from '@library/shared/domain';
 
