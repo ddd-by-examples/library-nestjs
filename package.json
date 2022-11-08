@@ -10,6 +10,9 @@
   },
   "private": true,
   "dependencies": {
+    "@mikro-orm/core": "^5.5.0",
+    "@mikro-orm/nestjs": "^5.1.2",
+    "@mikro-orm/postgresql": "^5.5.0",
     "@nestjs-architects/typed-cqrs": "^0.1.1",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.2.0",

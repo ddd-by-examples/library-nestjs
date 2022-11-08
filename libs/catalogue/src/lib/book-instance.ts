@@ -1,32 +1,16 @@
-import { PrimaryColumn, Column, Entity } from 'typeorm';
+import { Entity, Enum, PrimaryKey, Property } from '@mikro-orm/core';
 import { BookId } from './book-id';
 import { BookType } from './book-type';
+import { ISBNType } from './custom-db-types';
 import { ISBN } from './isbn';
 
 @Entity()
 export class BookInstance {
-  @Column({
-    type: 'varchar',
-    length: 100,
-    transformer: {
-      to: (value: ISBN) => value.value,
-      from: (value: string) => new ISBN(value),
-    },
-  })
+  @Property({ type: ISBNType })
   private isbn!: ISBN;
-  @Column({
-    type: 'enum',
-    enum: BookType,
-  })
+  @Enum(() => BookType)
   private bookType!: BookType;
-  @Column({
-    primary: true,
-    type: 'uuid',
-    transformer: {
-      to: (value: BookId) => value.value,
-      from: (value: string) => new BookId(value),
-    },
-  })
+  @PrimaryKey()
   private bookId!: BookId;
 
   static instanceOf(isbn: ISBN, bookType: BookType): BookInstance {

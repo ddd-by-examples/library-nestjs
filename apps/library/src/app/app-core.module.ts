@@ -1,3 +1,4 @@
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -15,6 +16,22 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    MikroOrmModule.forRoot({
+      host: process.env.DB_HOST,
+      port: 5432,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      dbName: process.env.DB_NAME,
+      autoLoadEntities: true,
+      schemaGenerator: {
+        disableForeignKeys: true,
+        createForeignKeyConstraints: true,
+        ignoreSchema: [],
+      },
+      type: 'postgresql',
+    }),
   ],
 })
-export class AppCoreModule {}
+export class AppCoreModule {
+  constructor();
+}
