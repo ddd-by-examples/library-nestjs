@@ -10,6 +10,10 @@
   },
   "private": true,
   "dependencies": {
+    "@mikro-orm/core": "5.5.3",
+    "@mikro-orm/migrations": "5.5.3",
+    "@mikro-orm/nestjs": "5.1.2",
+    "@mikro-orm/postgresql": "5.5.3",
     "@nestjs-architects/typed-cqrs": "1.0.0",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.2.0",
@@ -29,6 +33,7 @@
     "typeorm": "^0.2.45"
   },
   "devDependencies": {
+    "@mikro-orm/cli": "5.5.3",
     "@nestjs-architects/nx-ddd-plugin": "^2.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
