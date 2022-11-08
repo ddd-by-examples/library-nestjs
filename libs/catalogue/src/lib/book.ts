@@ -1,7 +1,8 @@
+import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { ensure, isString, Predicate, TinyTypeOf } from 'tiny-types';
-import { Column, Entity } from 'typeorm';
 import { BookInstance } from './book-instance';
 import { BookType } from './book-type';
+import { AuthorType, ISBNType, TitleType } from './custom-db-types';
 import { ISBN } from './isbn';
 
 export class Title extends TinyTypeOf<string>() {
@@ -30,36 +31,13 @@ export class Author extends TinyTypeOf<string>() {
 
 @Entity()
 export class Book {
-  @Column({
-    type: 'varchar',
-    length: 100,
-    transformer: {
-      to: (value: Author) => value.value,
-      from: (value: string) => new Author(value),
-    },
-  })
+  @Property({ type: AuthorType })
   private author!: Author;
 
-  @Column({
-    primary: true,
-    type: 'varchar',
-    length: 100,
-    transformer: {
-      // "| string" for the findOneBy
-      to: (value: ISBN | string) => (value as ISBN).value ?? value,
-      from: (value: string) => new ISBN(value),
-    },
-  })
+  @PrimaryKey({ type: ISBNType })
   private isbn!: ISBN;
 
-  @Column({
-    type: 'varchar',
-    length: 100,
-    transformer: {
-      to: (value: Title) => value.value,
-      from: (value: string) => new Title(value),
-    },
-  })
+  @Property({ type: TitleType })
   private title!: Title;
   static create(isbn: string, author: string, title: string): Book {
     const book = new Book();
