@@ -6,31 +6,36 @@ import { createSpyObj } from 'jest-createspyobj';
 import { BookFixtures } from '../../../../domain/tests/book.fixtures';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { PatronFixtures } from '../../../../domain/tests/patron.fixtures';
-import { BookRepository } from '../ports/book.repository';
+import { FindBookOnHold } from '../cancel-hold/find-book-on-hold';
 import { PatronRepository } from '../ports/patron.repository';
 import { CheckOutBookCommand } from './check-out-book.command';
 import { CheckOutBookHandler } from './check-out-book.handler';
 
 describe('CheckOutBookHandler', () => {
-  const bookRepository = createSpyObj(BookRepository, ['findById', 'save']);
-  const patronRepository = createSpyObj(PatronRepository, [
-    'findById',
-    'publish',
-  ]);
+  const bookOnHold = BookFixtures.bookOnHold();
+
+  const willFindBook: FindBookOnHold = {
+    findBookOnHold: () => Promise.resolve(some(bookOnHold)),
+  };
+  const willNotFindBook: FindBookOnHold = {
+    findBookOnHold: () => Promise.resolve(none),
+  };
+  const patronRepository: jest.Mocked<PatronRepository> = createSpyObj(
+    PatronRepository,
+    ['findById', 'publish']
+  );
 
   it('should successfully check out book if patron and book exist', async () => {
     // given
-    const checkingOut = new CheckOutBookHandler(
-      bookRepository,
-      patronRepository
+    const checkingOut = new CheckOutBookHandler(willFindBook, patronRepository);
+    // and
+    const patronId = persistedRegularPatronWithHold(
+      patronRepository,
+      bookOnHold
     );
-    // and
-    const book = persistedOnHoldBook(bookRepository);
-    // and
-    const patron = persistedRegularPatronWithHold(patronRepository, book);
     // when
     const result = await checkingOut.execute(
-      new CheckOutBookCommand(patron, book.bookId)
+      new CheckOutBookCommand(patronId, bookOnHold.bookId)
     );
     // then
     expect(result).toBe(Result.Success);
@@ -38,17 +43,12 @@ describe('CheckOutBookHandler', () => {
 
   it('should reject checking out book if one of the domain rules is broken (but should not fail!)', async () => {
     // given
-    const checkingOut = new CheckOutBookHandler(
-      bookRepository,
-      patronRepository
-    );
+    const checkingOut = new CheckOutBookHandler(willFindBook, patronRepository);
     // and
-    const patron = persistedRegularPatronWithoutHold(patronRepository);
-    //and
-    const book = persistedOnHoldBook(bookRepository);
+    const patronId = persistedRegularPatronWithoutHold(patronRepository);
     // when
     const result = await checkingOut.execute(
-      new CheckOutBookCommand(patron, book.bookId)
+      new CheckOutBookCommand(patronId, bookOnHold.bookId)
     );
     // then
     expect(result).toBe(Result.Rejection);
@@ -56,17 +56,12 @@ describe('CheckOutBookHandler', () => {
 
   it('should fail if patron does not exists', async () => {
     // given
-    const checkingOut = new CheckOutBookHandler(
-      bookRepository,
-      patronRepository
-    );
+    const checkingOut = new CheckOutBookHandler(willFindBook, patronRepository);
     // and
     const patron = unknownPatron(patronRepository);
-    // and
-    const book = persistedOnHoldBook(bookRepository);
     // when
     const result = checkingOut.execute(
-      new CheckOutBookCommand(patron, book.bookId)
+      new CheckOutBookCommand(patron, bookOnHold.bookId)
     );
     // then
     await expect(result).rejects.toThrow();
@@ -75,34 +70,19 @@ describe('CheckOutBookHandler', () => {
   it('should fail if book does not exists', async () => {
     // given
     const checkingOut = new CheckOutBookHandler(
-      bookRepository,
+      willNotFindBook,
       patronRepository
     );
-    // and
-    const notExistingBook = unknownBook(bookRepository);
     // and
     const patron = persistedRegularPatron(patronRepository);
     // when
     const result = checkingOut.execute(
-      new CheckOutBookCommand(patron, notExistingBook)
+      new CheckOutBookCommand(patron, BookId.generate())
     );
     // then
     await expect(result).rejects.toThrow();
   });
 });
-
-function persistedOnHoldBook(
-  repository: jest.Mocked<BookRepository>
-): BookOnHold {
-  const book = BookFixtures.bookOnHold();
-  repository.findById.mockResolvedValueOnce(some(book));
-  return book;
-}
-
-function unknownBook(repository: jest.Mocked<BookRepository>): BookId {
-  repository.findById.mockResolvedValueOnce(none);
-  return BookId.generate();
-}
 
 function unknownPatron(repository: jest.Mocked<PatronRepository>): PatronId {
   repository.findById.mockResolvedValueOnce(none);
