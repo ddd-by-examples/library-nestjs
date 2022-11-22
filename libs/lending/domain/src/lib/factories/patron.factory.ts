@@ -1,5 +1,4 @@
 import { Patron } from '../patron';
-import { allCheckingOutPolicies } from '../policies/checking-out.policy';
 import { allCurrentPolicies } from '../policies/placing-on-hold-policy';
 import { BookId } from '../value-objects/book-id';
 import { Hold } from '../value-objects/hold';
@@ -16,7 +15,6 @@ export class PatronFactory {
     patronHolds: Set<[BookId, LibraryBranchId]>
   ): Patron {
     return new Patron(
-      allCheckingOutPolicies,
       new PatronHolds(
         new Set(
           [...patronHolds].map(
