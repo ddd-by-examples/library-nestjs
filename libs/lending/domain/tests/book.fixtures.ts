@@ -23,3 +23,38 @@ export class BookFixtures {
     );
   }
 }
+
+export class BookBuilder {
+  private id?: BookId;
+  private libraryBranchId?: LibraryBranchId;
+  private patronId?: PatronId;
+  private version?: Version;
+
+  withId(id: BookId): BookBuilder {
+    this.id = id;
+    return this;
+  }
+
+  withLibraryBranchId(libraryBranchId: LibraryBranchId): BookBuilder {
+    this.libraryBranchId = libraryBranchId;
+    return this;
+  }
+
+  withPatronId(patronId: PatronId): BookBuilder {
+    this.patronId = patronId;
+    return this;
+  }
+
+  withVersion(version: Version): BookBuilder {
+    this.version = version;
+    return this;
+  }
+
+  buildCirculatingBook(): AvailableBook {
+    return new AvailableBook(
+      this.id ?? BookId.generate(),
+      this.libraryBranchId ?? LibraryBranchId.generate(),
+      this.version ?? Version.zero()
+    );
+  }
+}
