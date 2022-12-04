@@ -22,6 +22,9 @@
         "libs/lending/infrastructure/src/index.ts"
       ],
       "@library/lending/ui-rest": ["libs/lending/ui-rest/src/index.ts"],
+      "@library/shared-infrastructure-testing": [
+        "libs/shared/infrastructure-testing/src/index.ts"
+      ],
       "@library/shared/domain": ["libs/shared/domain/src/index.ts"],
       "@library/shared/infrastructure-nestjs-cqrs-events": [
         "libs/shared/infrastructure-nestjs-cqrs-events/src/index.ts"

@@ -1,0 +1,23 @@
+{
+  "root": "libs/shared/infrastructure-testing",
+  "sourceRoot": "libs/shared/infrastructure-testing/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/shared/infrastructure-testing/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/shared/infrastructure-testing"],
+      "options": {
+        "jestConfig": "libs/shared/infrastructure-testing/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["type:infrastructure"]
+}

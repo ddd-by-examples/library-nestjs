@@ -2,7 +2,6 @@ import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { fromNullable, Option } from 'fp-ts/Option';
-import { Repository } from 'typeorm';
 import { Book } from './book';
 import { BookInstance } from './book-instance';
 import { ISBN } from './isbn';
@@ -16,7 +15,7 @@ export class CatalogueDatabase {
     private readonly bookInstanceRepository: EntityRepository<BookInstance>
   ) {}
   async findBookByIsbn(isbn: ISBN): Promise<Option<Book>> {
-    return fromNullable(await this.bookRepository.findOne(isbn.value));
+    return fromNullable(await this.bookRepository.findOne(isbn));
   }
   async saveNewBook(book: Book): Promise<Book> {
     await this.bookRepository.persistAndFlush(book);
