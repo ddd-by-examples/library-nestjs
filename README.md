@@ -133,7 +133,7 @@ to a product team that can take care of the whole business area end-to-end.
 
 #### NestJS
 
-NestJS is taking a big part of the market. Currently, the most popular framework is still Express, but for complex business applications, NestJS will fit better, thanks to its advanced Dependency Injection system, TypeScript as the main language, and many out-of-the-box solutions that make the development more organized and standardized from the very begging.
+NestJS is taking a big part of the market. Currently, the most popular framework is still Express, but for complex business applications, NestJS will fit better, thanks to its advanced Dependency Injection system, TypeScript as the main language, and many out-of-the-box solutions that make the development more organized and standardized from the very beginning.
 
 In oposite to the goal from the [ddd-by-examples/library#spring](https://github.com/ddd-by-examples/library#spring), we will not categorically avoid dependence on our framework. As Eric Evans said in his book
 
