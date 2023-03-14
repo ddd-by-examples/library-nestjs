@@ -1,5 +1,5 @@
 import { Version } from '@library/shared/domain';
-import { BookHoldCanceled } from '../events/book-hold-canceling-failed';
+import { BookHoldCanceled } from '../events/book-hold-canceled';
 import { BookId } from '../value-objects/book-id';
 import { LibraryBranchId } from '../value-objects/library-branch-id';
 import { PatronId } from '../value-objects/patron-id';
